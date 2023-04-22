@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private var revenue = 0
     private var dessertsSold = 0
+    private lateinit var dessertTimer: DessertTimer
 
     // Contains all the views
     private lateinit var binding: ActivityMainBinding
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         binding.dessertButton.setOnClickListener {
             onDessertClicked()
         }
+        dessertTimer = DessertTimer(this.lifecycle)
 
         // Set the TextViews to the right values
         binding.revenue = revenue
@@ -147,11 +149,17 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        Timber.i("onSaveInstanceState Called")
+    }
 
     override fun onStart() {
         super.onStart()
+        dessertTimer.startTimer()
 
-        Timber.i("onStart Called")
+        Timber.i("onStart called")
     }
 
     override fun onResume() {
@@ -166,6 +174,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        dessertTimer.stopTimer()
+
         Timber.i("onStop Called")
     }
 
